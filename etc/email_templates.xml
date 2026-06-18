@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="shoppingcart_email_cart_ready" label="Shopping Cart - Your Cart is Ready" file="shoppingcart_email_cart_ready.html" type="html" module="Osiyatech_ShoppingCart" area="frontend"/>
+    <template id="shoppingcart_email_approval_request" label="Shopping Cart - Approval Request" file="shoppingcart_email_approval_request.html" type="html" module="Osiyatech_ShoppingCart" area="frontend"/>
+    <template id="shoppingcart_email_submitted" label="Shopping Cart - Approval Request Submitted" file="shoppingcart_email_submitted.html" type="html" module="Osiyatech_ShoppingCart" area="frontend"/>
+    <template id="shoppingcart_email_approved" label="Shopping Cart - Request Approved" file="shoppingcart_email_approved.html" type="html" module="Osiyatech_ShoppingCart" area="frontend"/>
+    <template id="shoppingcart_email_rejected" label="Shopping Cart - Request Rejected" file="shoppingcart_email_rejected.html" type="html" module="Osiyatech_ShoppingCart" area="frontend"/>
+</config>

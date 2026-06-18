@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Osiyatech. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Osiyatech\ShoppingCart\Api\Data\ShoppingCartRequestInterface" type="Osiyatech\ShoppingCart\Model\ShoppingCartRequest"/>
+    <preference for="Osiyatech\ShoppingCart\Api\ShoppingCartRequestRepositoryInterface" type="Osiyatech\ShoppingCart\Model\ShoppingCartRequestRepository"/>
+    <preference for="Osiyatech\ShoppingCart\Api\ShippingRateForEmailProviderInterface" type="Osiyatech\ShoppingCart\Model\Shipping\DefaultShippingRateForEmailProvider"/>
+
+    <!-- CartReservationManager: MSI services omitted so di:compile works when Inventory modules are disabled.
+         The class resolves them via ObjectManager when needed. -->
+
+    <!-- Grid listing: concrete class qualifies entity_id (joins add ambiguous entity_id columns). -->
+    <type name="Osiyatech\ShoppingCart\Model\ResourceModel\ShoppingCartRequest\Grid\Collection">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">shopping_cart_request</argument>
+            <argument name="resourceModel" xsi:type="string">Osiyatech\ShoppingCart\Model\ResourceModel\ShoppingCartRequest</argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="shoppingcart_request_listing_data_source" xsi:type="string">Osiyatech\ShoppingCart\Model\ResourceModel\ShoppingCartRequest\Grid\Collection</item>
+            </argument>
+        </arguments>
+        <plugin name="shoppingcart_join_customer_to_request_grid" type="Osiyatech\ShoppingCart\Plugin\Adminhtml\JoinCustomerToRequestGrid"/>
+    </type>
+
+    <!-- Salable qty: subtract PO pending (all) + approved (other quotes); CheckoutSession Proxy avoids init loops. -->
+    <type name="Osiyatech\ShoppingCart\Plugin\Inventory\Model\GetProductSalableQtyPlugin">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Osiyatech\ShoppingCart\Plugin\CatalogInventory\Model\StockStatePlugin">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\InventorySalesApi\Api\GetProductSalableQtyInterface">
+        <plugin name="shoppingcart_get_product_salable_qty_pending" type="Osiyatech\ShoppingCart\Plugin\Inventory\Model\GetProductSalableQtyPlugin" sortOrder="20"/>
+    </type>
+    <type name="Magento\InventorySales\Model\IsProductSalableForRequestedQtyCondition\IsProductSalableForRequestedQtyConditionChain">
+        <plugin name="shoppingcart_salable_qty_cap_on_chain" type="Osiyatech\ShoppingCart\Plugin\Inventory\Model\IsProductSalableForRequestedQtyConditionChainPlugin" sortOrder="100"/>
+    </type>
+
+    <type name="Magento\Quote\Model\Quote">
+        <plugin name="shoppingcart_quote_add_product_qty_guard" type="Osiyatech\ShoppingCart\Plugin\Quote\Model\QuoteAddProductQtyGuardPlugin"/>
+    </type>
+
+    <!-- Cart page "Update Shopping Cart" uses Cart::updateItems(), not Quote::updateItem() -->
+    <type name="Magento\Checkout\Model\Cart">
+        <plugin name="shoppingcart_cart_update_items_qty_guard" type="Osiyatech\ShoppingCart\Plugin\Checkout\Model\CartUpdateItemsQtyGuardPlugin"/>
+    </type>
+
+    <!-- Generate Cart checkout: custom cart-ready email only (no default Magento order confirmation). -->
+    <type name="Magento\Sales\Model\Order\Email\Sender\OrderSender">
+        <plugin name="shoppingcart_disable_default_order_email_for_generate_cart"
+                type="Osiyatech\ShoppingCart\Plugin\Sales\Model\Order\Email\Sender\DisableOrderEmailForGenerateCart"/>
+    </type>
+
+</config>

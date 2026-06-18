@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <shoppingcart>
+            <cart>
+                <enabled>1</enabled>
+                <salable_qty_guard>1</salable_qty_guard>
+                <approval_threshold>10000</approval_threshold>
+                <po_recipient_email>hitachi-in.po@prominate.com</po_recipient_email>
+                <generate_cart_reservation_days>7</generate_cart_reservation_days>
+                <approval_reservation_days>7</approval_reservation_days>
+                <waiting_for_po_auto_cancel_days>7</waiting_for_po_auto_cancel_days>
+                <ariba_supplier_code>1000376302</ariba_supplier_code>
+            </cart>
+            <email>
+                <sender>general</sender>
+                <cart_ready>shoppingcart_email_cart_ready</cart_ready>
+                <approval_request>shoppingcart_email_approval_request</approval_request>
+                <submitted>shoppingcart_email_submitted</submitted>
+                <approved>shoppingcart_email_approved</approved>
+                <rejected>shoppingcart_email_rejected</rejected>
+            </email>
+        </shoppingcart>
+        <payment>
+            <shoppingcart_generatecart>
+                <active>1</active>
+                <model>Osiyatech\ShoppingCart\Model\Payment\GenerateCartMethod</model>
+                <title>Generate Shopping Cart (PO based Payment method)</title>
+                <order_status>waiting_for_po</order_status>
+                <sort_order>10</sort_order>
+                <can_use_checkout>1</can_use_checkout>
+                <can_use_internal>0</can_use_internal>
+            </shoppingcart_generatecart>
+        </payment>
+    </default>
+</config>

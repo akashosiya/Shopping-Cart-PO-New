@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Osiyatech. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Magento_Sales::sales">
+                    <resource id="Osiyatech_ShoppingCart::cart_po" title="Shopping Cart PO Requests" sortOrder="100">
+                        <resource id="Osiyatech_ShoppingCart::cart_po_approve" title="Approve Cart PO Requests" sortOrder="10"/>
+                        <resource id="Osiyatech_ShoppingCart::cart_po_reject" title="Reject Cart PO Requests" sortOrder="20"/>
+                    </resource>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>

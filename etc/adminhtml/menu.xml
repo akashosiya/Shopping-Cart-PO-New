@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Osiyatech. All rights reserved.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Osiyatech_ShoppingCart::cart_po" title="Shopping Cart PO" module="Osiyatech_ShoppingCart" sortOrder="90" parent="Magento_Sales::sales" resource="Osiyatech_ShoppingCart::cart_po"/>
+        <add id="Osiyatech_ShoppingCart::cart_po_requests" title="Cart PO Requests" module="Osiyatech_ShoppingCart" sortOrder="10" parent="Osiyatech_ShoppingCart::cart_po" action="shoppingcart/request" resource="Osiyatech_ShoppingCart::cart_po"/>
+    </menu>
+</config>

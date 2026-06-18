@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\CartReady" type="Magento\Config\Model\Config\Source\Email\Template">
+        <arguments>
+            <argument name="path" xsi:type="string">shoppingcart/email/cart_ready</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\ApprovalRequest" type="Magento\Config\Model\Config\Source\Email\Template">
+        <arguments>
+            <argument name="path" xsi:type="string">shoppingcart/email/approval_request</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Submitted" type="Magento\Config\Model\Config\Source\Email\Template">
+        <arguments>
+            <argument name="path" xsi:type="string">shoppingcart/email/submitted</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Approved" type="Magento\Config\Model\Config\Source\Email\Template">
+        <arguments>
+            <argument name="path" xsi:type="string">shoppingcart/email/approved</argument>
+        </arguments>
+    </virtualType>
+    <virtualType name="Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Rejected" type="Magento\Config\Model\Config\Source\Email\Template">
+        <arguments>
+            <argument name="path" xsi:type="string">shoppingcart/email/rejected</argument>
+        </arguments>
+    </virtualType>
+</config>

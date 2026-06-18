@@ -1,0 +1,20 @@
+{
+    "name": "osiyatech/module-shopping-cart",
+    "description": "Shopping Cart PO – Cart page (Purchase Approval + Generate Shopping Cart) for Magento 2",
+    "type": "magento2-module",
+    "version": "1.0.0",
+    "license": "proprietary",
+    "authors": [{"name": "Osiyatech", "email": "info@osiyatech.com"}],
+    "require": {
+        "php": "~7.4.0||~8.1.0||~8.2.0",
+        "magento/framework": "*",
+        "magento/module-checkout": "*",
+        "magento/module-sales": "*",
+        "magento/module-backend": "*",
+        "magento/module-email": "*"
+    },
+    "autoload": {
+        "files": ["registration.php"],
+        "psr-4": {"Osiyatech\\ShoppingCart\\": ""}
+    }
+}

@@ -1,0 +1,208 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Osiyatech. All rights reserved.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <argument name="data" xsi:type="array">
+        <item name="js_config" xsi:type="array">
+            <item name="provider" xsi:type="string">shoppingcart_request_listing.shoppingcart_request_listing_data_source</item>
+        </item>
+    </argument>
+    <settings>
+        <spinner>shoppingcart_request_columns</spinner>
+        <deps>
+            <dep>shoppingcart_request_listing.shoppingcart_request_listing_data_source</dep>
+        </deps>
+    </settings>
+    <dataSource name="shoppingcart_request_listing_data_source" component="Magento_Ui/js/grid/provider">
+        <settings>
+            <storageConfig>
+                <param name="indexField" xsi:type="string">entity_id</param>
+            </storageConfig>
+            <updateUrl path="mui/index/render"/>
+        </settings>
+        <aclResource>Osiyatech_ShoppingCart::cart_po</aclResource>
+        <dataProvider class="Osiyatech\ShoppingCart\Ui\DataProvider\Request\ListingDataProvider" name="shoppingcart_request_listing_data_source">
+            <settings>
+                <requestFieldName>id</requestFieldName>
+                <primaryFieldName>entity_id</primaryFieldName>
+            </settings>
+        </dataProvider>
+    </dataSource>
+    <listingToolbar name="listing_top">
+        <settings><sticky>true</sticky></settings>
+        <bookmark name="bookmarks"/>
+        <columnsControls name="columns_controls"/>
+        <filterSearch name="fulltext"/>
+        <filters name="listing_filters">
+            <settings>
+                <templates>
+                    <filters>
+                        <select>
+                            <param name="template" xsi:type="string">ui/grid/filters/elements/ui-select</param>
+                            <param name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</param>
+                        </select>
+                    </filters>
+                </templates>
+            </settings>
+        </filters>
+        <massaction name="listing_massaction">
+            <action name="approve">
+                <settings>
+                    <url path="shoppingcart/request/massApprove"/>
+                    <type>approve</type>
+                    <label translate="true">Approve</label>
+                </settings>
+            </action>
+            <action name="reject">
+                <settings>
+                    <url path="shoppingcart/request/massReject"/>
+                    <type>reject</type>
+                    <label translate="true">Reject</label>
+                </settings>
+            </action>
+            <action name="cancel">
+                <settings>
+                    <confirm>
+                        <title translate="true">Cancel Cart PO Requests</title>
+                        <message translate="true">Are you sure you want to cancel the selected request(s)? Reservations will be released.</message>
+                    </confirm>
+                    <url path="shoppingcart/request/massCancel"/>
+                    <type>cancel</type>
+                    <label translate="true">Cancel</label>
+                </settings>
+            </action>
+        </massaction>
+        <paging name="listing_paging"/>
+    </listingToolbar>
+    <columns name="shoppingcart_request_columns">
+        <selectionsColumn name="ids">
+            <settings><indexField>entity_id</indexField></settings>
+        </selectionsColumn>
+        <column name="entity_id">
+            <settings>
+                <filter>textRange</filter>
+                <label translate="true">ID</label>
+                <sorting>desc</sorting>
+            </settings>
+        </column>
+        <column name="request_type">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="Osiyatech\ShoppingCart\Ui\Component\Column\RequestType"/>
+                <label translate="true">Request Type</label>
+            </settings>
+        </column>
+        <column name="purchase_type">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="Osiyatech\ShoppingCart\Ui\Component\Column\PurchaseType"/>
+                <label translate="true">Purchase Type</label>
+            </settings>
+        </column>
+		<column name="website_name">
+			<settings>
+				<filter>select</filter>
+				<dataType>select</dataType>
+				<options class="Osiyatech\ShoppingCart\Ui\Component\Column\Website"/>
+				<label translate="true">Website</label>
+			</settings>
+		</column>
+        <column name="approver_email">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Approver</label>
+            </settings>
+        </column>
+        <column name="reason_for_purchase">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Reason for Purchase</label>
+            </settings>
+        </column>
+        <column name="shipping_method_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Shipping Method</label>
+            </settings>
+        </column>
+        <column name="shipping_method_charges">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Shipping Charges</label>
+            </settings>
+        </column>
+        <column name="cart_number" class="Osiyatech\ShoppingCart\Ui\Component\Column\CartNumber">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Cart Number</label>
+            </settings>
+        </column>
+        <column name="order_total" class="Osiyatech\ShoppingCart\Ui\Component\Listing\Column\OrderTotal">
+            <settings>
+                <label translate="true">Order Total</label>
+                <sortable>false</sortable>
+            </settings>
+        </column>
+        <column name="status">
+            <settings>
+                <filter>select</filter>
+                <dataType>select</dataType>
+                <options class="Osiyatech\ShoppingCart\Ui\Component\Column\Status"/>
+                <label translate="true">Status</label>
+            </settings>
+        </column>
+        <column name="quote_id">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Quote ID</label>
+            </settings>
+        </column>
+        <column name="customer_name">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Name</label>
+            </settings>
+        </column>
+        <column name="customer_email">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Customer Email</label>
+            </settings>
+        </column>
+        <column name="submitted_at">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Submitted At</label>
+            </settings>
+        </column>
+        <column name="approved_at">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Approved At</label>
+            </settings>
+        </column>
+        <column name="approved_by_label">
+            <settings>
+                <filter>text</filter>
+                <label translate="true">Approved By</label>
+            </settings>
+        </column>
+        <column name="rejected_at">
+            <settings>
+                <filter>dateRange</filter>
+                <dataType>date</dataType>
+                <label translate="true">Rejected At</label>
+            </settings>
+        </column>
+        <actionsColumn name="actions" class="Osiyatech\ShoppingCart\Ui\Component\Listing\Column\Actions">
+            <settings><indexField>entity_id</indexField></settings>
+        </actionsColumn>
+    </columns>
+</listing>

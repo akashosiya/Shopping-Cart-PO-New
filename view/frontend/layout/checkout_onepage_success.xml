@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+        <title>Thank you!</title>
+    </head>
+    <body>
+        <!-- Removes theme heading that often duplicates "Thank you for your purchase!" above checkout.success -->
+        <referenceBlock name="page.main.title" remove="true"/>
+        <referenceContainer name="content">
+            <block class="Osiyatech\ShoppingCart\Block\Checkout\Onepage\Success\PoFollowUp"
+                   name="shoppingcart.checkout.success.po_followup"
+                   template="Osiyatech_ShoppingCart::checkout/success/po_followup.phtml"/>
+        </referenceContainer>
+    </body>
+</page>

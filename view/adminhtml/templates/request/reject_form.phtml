@@ -1,0 +1,75 @@
+<?php
+/** @var \Osiyatech\ShoppingCart\Block\Adminhtml\Request\RejectForm $block */
+$entity = $block->getRequestEntity();
+?>
+
+<?php if (!$entity): ?>
+    <div class="message message-error">
+        <div><?= $block->escapeHtml(__('Request not found.')) ?></div>
+    </div>
+<?php return; endif; ?>
+
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-inner">
+            <div class="page-actions-buttons">
+                <button type="button" class="action-back" onclick="window.location.href='<?= $block->escapeJs($block->getBackUrl()) ?>'">
+                    <span><?= $block->escapeHtml(__('Back')) ?></span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Reject Cart PO Request')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <table class="admin__table-secondary" style="margin-bottom: 20px;">
+            <tbody>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Request ID')) ?></th>
+                    <td><?= (int) $entity->getEntityId() ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                    <td><?= $block->escapeHtml($block->getCustomerName($entity)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Customer Email')) ?></th>
+                    <td><?= $block->escapeHtml($block->getCustomerEmail($entity)) ?></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <form id="reject-cart-form" action="<?= $block->escapeUrl($block->getRejectUrl()) ?>" method="post">
+            <?= $block->getBlockHtml('formkey') ?>
+            <div class="admin__field _required">
+                <label class="admin__field-label" for="rejection_reason">
+                    <span><?= $block->escapeHtml(__('Reason for Rejection')) ?></span>
+                </label>
+                <div class="admin__field-control">
+                    <textarea id="rejection_reason"
+                              name="rejection_reason"
+                              class="admin__control-textarea required-entry"
+                              rows="5"
+                              placeholder="<?= $block->escapeHtmlAttr(__('Please provide a reason...')) ?>"></textarea>
+                </div>
+            </div>
+            <div class="admin__field" style="margin-top: 15px;">
+                <div class="admin__field-control">
+                    <button type="submit" class="action-primary">
+                        <span><?= $block->escapeHtml(__('Submit Rejection')) ?></span>
+                    </button>
+                    <button type="button"
+                            class="action-secondary"
+                            style="margin-left: 10px;"
+                            onclick="window.location.href='<?= $block->escapeJs($block->getBackUrl()) ?>'">
+                        <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

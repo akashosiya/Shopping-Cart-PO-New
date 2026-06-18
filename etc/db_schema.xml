@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="shopping_cart_request" resource="default" engine="innodb" comment="Shopping Cart PO Requests (Cart Page)">
+        <column xsi:type="int" name="entity_id" unsigned="true" nullable="false" identity="true" comment="Entity ID"/>
+        <column xsi:type="int" name="quote_id" unsigned="true" nullable="true" comment="Quote ID"/>
+        <column xsi:type="int" name="customer_id" unsigned="true" nullable="false" comment="Customer ID"/>
+        <column xsi:type="varchar" name="request_type" length="32" nullable="false" comment="Type: approval, generate_cart"/>
+        <column xsi:type="varchar" name="purchase_type" length="32" nullable="true" comment="Purchase Type: Official, Personal"/>
+        <column xsi:type="varchar" name="approver_email" length="255" nullable="true" comment="Approver email (CMC)"/>
+        <column xsi:type="text" name="reason_for_purchase" nullable="true" comment="Reason for purchase"/>
+        <column xsi:type="varchar" name="cart_number" length="64" nullable="true" comment="Shopping Cart Number (for generate_cart)"/>
+        <column xsi:type="varchar" name="status" length="50" nullable="false" default="pending" comment="Status"/>
+        <column xsi:type="varchar" name="approval_token" length="64" nullable="true" comment="Approval Token"/>
+        <column xsi:type="timestamp" name="approval_token_created_at" nullable="true" comment="Approval Token Created At"/>
+        <column xsi:type="text" name="reserved_items" nullable="true" comment="Reserved Items JSON"/>
+        <column xsi:type="timestamp" name="reserved_at" nullable="true" comment="Reserved At"/>
+        <column xsi:type="smallint" name="msi_reservation_placed" unsigned="true" nullable="false" default="0" comment="1 if MSI inventory reservation was placed for this approval request"/>
+        <column xsi:type="timestamp" name="reservation_released_at" nullable="true" comment="Reservation Released At"/>
+        <column xsi:type="timestamp" name="submitted_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Submitted At"/>
+        <column xsi:type="timestamp" name="approved_at" nullable="true" comment="Approved At"/>
+        <column xsi:type="timestamp" name="rejected_at" nullable="true" comment="Rejected At"/>
+        <column xsi:type="text" name="rejection_reason" nullable="true" comment="Rejection Reason"/>
+        <column xsi:type="varchar" name="resume_token" length="64" nullable="true" comment="Resume Token"/>
+        <column xsi:type="timestamp" name="resume_token_created_at" nullable="true" comment="Resume Token Created At"/>
+        <column xsi:type="int" name="approved_by" unsigned="true" nullable="true" comment="Approved By"/>
+        <column xsi:type="int" name="rejected_by" unsigned="true" nullable="true" comment="Rejected By"/>
+        <column xsi:type="varchar" name="shipping_method_name" length="255" nullable="true" comment="Shipping method name (for approval email and grid)"/>
+        <column xsi:type="varchar" name="shipping_method_charges" length="100" nullable="true" comment="Shipping method charges (formatted)"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP" comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true" comment="Updated At"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY"><column name="entity_id"/></constraint>
+        <constraint xsi:type="foreign" referenceId="SHOPPING_CART_REQUEST_QUOTE_QUOTE_ENTITY_ID" table="shopping_cart_request" column="quote_id" referenceTable="quote" referenceColumn="entity_id" onDelete="SET NULL"/>
+        <constraint xsi:type="foreign" referenceId="SHOPPING_CART_REQUEST_CUSTOMER_CUSTOMER_ENTITY_ID" table="shopping_cart_request" column="customer_id" referenceTable="customer_entity" referenceColumn="entity_id" onDelete="CASCADE"/>
+        <index referenceId="SHOPPING_CART_REQUEST_QUOTE_ID" indexType="btree"><column name="quote_id"/></index>
+        <index referenceId="SHOPPING_CART_REQUEST_STATUS" indexType="btree"><column name="status"/></index>
+        <index referenceId="SHOPPING_CART_REQUEST_REQUEST_TYPE" indexType="btree"><column name="request_type"/></index>
+    </table>
+</schema>

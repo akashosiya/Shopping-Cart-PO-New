@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="shoppingcart" translate="label" type="text" sortOrder="910" showInDefault="1" showInWebsite="1" showInStore="1">
+            <label>Shopping Cart PO</label>
+            <tab>sales</tab>
+            <resource>Osiyatech_ShoppingCart::config</resource>
+            <group id="cart" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Cart Page</label>
+                <field id="enabled" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enable on Cart Page</label>
+                    <comment>Show Purchase Approval and Generate Shopping Cart on cart page.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="salable_qty_guard" translate="label" type="select" sortOrder="15" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Enforce salable qty on add / cart update</label>
+                    <comment>Extra check on top of Magento stock validation. Leave No unless you need it; Yes can block add-to-cart when MSI salable qty disagrees with what the product page shows.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="approval_threshold" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval threshold (amount)</label>
+                    <comment>Orders exceeding this amount (e.g. 10000) require Purchase Approval form.</comment>
+                    <validate>validate-zero-or-greater validate-number</validate>
+                </field>
+				<field id="purchase_type_checkout_flow" translate="label" type="select" sortOrder="25" showInDefault="1" showInWebsite="1" showInStore="1">
+					<label>Enable Purchase Type Checkout Flow</label>
+					<comment>Enable only for store where Personal should go directly to checkout and Official should require approval.</comment>
+					<source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+				</field>
+                <field id="po_recipient_email" translate="label" type="text" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>PO recipient email (Generate Shopping Cart)</label>
+                    <comment>Customer must email their PO to this address.</comment>
+                </field>
+                <field id="generate_cart_reservation_days" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Generate Cart – stock reservation (days)</label>
+                    <validate>validate-zero-or-greater validate-digits</validate>
+                </field>
+                <field id="approval_reservation_days" translate="label" type="text" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval – cart reservation (days)</label>
+                    <comment>Cart items reserved for this many days after approval request. Default 7 days.</comment>
+                    <validate>validate-zero-or-greater validate-digits</validate>
+                </field>
+                <field id="waiting_for_po_auto_cancel_days" translate="label" type="text" sortOrder="55" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Waiting for PO – auto-cancel order (days)</label>
+                    <comment>If admin does not process the order within this time, the order is cancelled and stock is released so items can be sold again. Use 0 to disable.</comment>
+                    <validate>validate-zero-or-greater validate-digits</validate>
+                </field>
+                <field id="approver_list" translate="label" type="textarea" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approver list (Purchase Approval)</label>
+                    <comment>One per line. Use either format: "Name,email@example.com" or "Name (email@example.com)". Dropdown shows "Name (email)"; only the email is used when sending mail. Examples: Adarsh Tated,adarsh.tated@gmail.com or Adrsh Tated (adarsh.tated@gmail.com)</comment>
+                </field>
+            </group>
+            <group id="email" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Email Templates</label>
+                <comment>Create custom templates under Marketing → Communications → Email Templates (Load default template, then save). Select them here per website/store view.</comment>
+                <field id="sender" translate="label" type="select" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Email Sender</label>
+                    <source_model>Magento\Config\Model\Config\Source\Email\Identity</source_model>
+                </field>
+                <field id="cart_ready" translate="label comment" type="select" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Your Cart is Ready Template</label>
+                    <comment>Sent when Generate Shopping Cart completes (cart number email to customer).</comment>
+                    <source_model>Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\CartReady</source_model>
+                </field>
+                <field id="approval_request" translate="label comment" type="select" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval Request Template</label>
+                    <comment>Sent to the selected approver when customer submits Purchase Approval.</comment>
+                    <source_model>Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\ApprovalRequest</source_model>
+                </field>
+                <field id="submitted" translate="label comment" type="select" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Approval Submitted Template</label>
+                    <comment>Confirmation email to customer after approval request is submitted.</comment>
+                    <source_model>Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Submitted</source_model>
+                </field>
+                <field id="approved" translate="label comment" type="select" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Request Approved Template</label>
+                    <comment>Sent to customer when approver or admin approves the request.</comment>
+                    <source_model>Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Approved</source_model>
+                </field>
+                <field id="rejected" translate="label comment" type="select" sortOrder="60" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Request Rejected Template</label>
+                    <comment>Sent to customer when approver or admin rejects the request.</comment>
+                    <source_model>Osiyatech\ShoppingCart\Model\Config\Source\Email\Template\Rejected</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

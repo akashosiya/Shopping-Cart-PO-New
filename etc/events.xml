@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="osiyatech_shoppingcart_set_waiting_for_po_status"
+                  instance="Osiyatech\ShoppingCart\Observer\SetWaitingForPoStatus"/>
+        <observer name="osiyatech_shoppingcart_send_cart_ready_after_generate_cart_checkout"
+                  instance="Osiyatech\ShoppingCart\Observer\SendGenerateCartReadyEmail"/>
+        <observer name="osiyatech_shoppingcart_create_request_from_generate_cart_order"
+                  instance="Osiyatech\ShoppingCart\Observer\CreateGenerateCartRequestFromOrder"/>
+    </event>
+    <event name="layout_generate_blocks_before">
+        <observer name="osiyatech_shoppingcart_remove_default_checkout_success_po"
+                  instance="Osiyatech\ShoppingCart\Observer\RemoveDefaultCheckoutSuccessForPoOrder"/>
+    </event>
+</config>

@@ -1,0 +1,186 @@
+<?php
+/** @var \Osiyatech\ShoppingCart\Block\Adminhtml\Request\View $block */
+$entity = $block->getRequestEntity();
+?>
+
+<?php if (!$entity): ?>
+    <div class="message message-error">
+        <div><?= $block->escapeHtml(__('Request not found.')) ?></div>
+    </div>
+<?php return; endif; ?>
+
+<div class="page-main-actions">
+    <div class="page-actions">
+        <div class="page-actions-inner">
+            <div class="page-actions-buttons">
+                <?php if ($entity->getStatus() === \Osiyatech\ShoppingCart\Api\Data\ShoppingCartRequestInterface::STATUS_PENDING): ?>
+                    <a class="action-default scalable primary" href="<?= $block->escapeUrl($block->getApproveUrl()) ?>">
+                        <span><?= $block->escapeHtml(__('Approve')) ?></span>
+                    </a>
+                    <button type="button" class="action-default scalable" id="reject-cart-request-btn" data-request-id="<?= (int)$entity->getEntityId() ?>">
+                        <span><?= $block->escapeHtml(__('Reject')) ?></span>
+                    </button>
+                <?php endif; ?>
+                <?php if ($block->canAdminCancel($entity)): ?>
+                    <?php
+                    $cancelMsg = $entity->getStatus() === \Osiyatech\ShoppingCart\Api\Data\ShoppingCartRequestInterface::STATUS_APPROVED
+                        ? (string) __('This request was already approved. Cancelling will withdraw approval and release reserved quantity. Continue?')
+                        : (string) __('Cancel this request? Reserved quantity will be released.');
+                    ?>
+                    <a class="action-default scalable"
+                       href="<?= $block->escapeUrl($block->getCancelUrl()) ?>"
+                       onclick="return confirm('<?= $block->escapeJs($cancelMsg) ?>');">
+                        <span><?= $block->escapeHtml(__('Cancel')) ?></span>
+                    </a>
+                <?php endif; ?>
+                <?php if ($block->canResendCartReadyEmail($entity)): ?>
+                    <a class="action-default scalable" href="<?= $block->escapeUrl($block->getResendCartEmailUrl()) ?>">
+                        <span><?= $block->escapeHtml(__('Resend shopping cart email to customer')) ?></span>
+                    </a>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Shopping Cart PO Request Details')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <table class="admin__table-secondary">
+            <tbody>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Request ID')) ?></th>
+                    <td><?= (int)$entity->getEntityId() ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Quote ID')) ?></th>
+                    <td><?= (int)$entity->getQuoteId() ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Customer Name')) ?></th>
+                    <td><?= $block->escapeHtml($block->getCustomerName($entity)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Customer Email')) ?></th>
+                    <td><?= $block->escapeHtml($block->getCustomerEmail($entity)) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Request Type')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getRequestType()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Purchase Type')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getPurchaseType()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Approver Email')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getApproverEmail()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Reason for Purchase')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getReasonForPurchase()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Cart Number')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getCartNumber()) ?></td>
+                </tr>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Status')) ?></th>
+                    <td><strong><?= $block->escapeHtml($entity->getStatus()) ?></strong></td>
+                </tr>
+                <?php if ($entity->getRejectionReason()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Rejection Reason')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getRejectionReason()) ?></td>
+                </tr>
+                <?php endif; ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Submitted At')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getSubmittedAt()) ?></td>
+                </tr>
+                <?php if ($entity->getApprovedAt()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Approved At')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getApprovedAt()) ?></td>
+                </tr>
+                <?php endif; ?>
+                <?php if ($entity->getRejectedAt()): ?>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Rejected At')) ?></th>
+                    <td><?= $block->escapeHtml($entity->getRejectedAt()) ?></td>
+                </tr>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<?php $cartItems = $block->getCartItemsForDisplay($entity); ?>
+<section class="admin__page-section">
+    <div class="admin__page-section-title">
+        <span class="title"><?= $block->escapeHtml(__('Cart Items')) ?></span>
+    </div>
+    <div class="admin__page-section-content">
+        <?php if (!empty($cartItems)): ?>
+        <table class="admin__table-primary">
+            <thead>
+                <tr>
+                    <th><?= $block->escapeHtml(__('Product Name')) ?></th>
+                    <th><?= $block->escapeHtml(__('SKU')) ?></th>
+                    <th class="col-qty"><?= $block->escapeHtml(__('Qty')) ?></th>
+                    <th><?= $block->escapeHtml(__('Price')) ?></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($cartItems as $item): ?>
+                <tr>
+                    <td><?= $block->escapeHtml($item['name']) ?></td>
+                    <td><?= $block->escapeHtml($item['sku']) ?></td>
+                    <td class="col-qty"><?= (float) $item['qty'] ?></td>
+                    <td><?= $item['price'] !== null ? $block->escapeHtml($item['price']) : '—' ?></td>
+                </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+        <?php else: ?>
+        <p class="message message-notice">
+            <?= $block->escapeHtml(__('No line items are available (empty quote and no saved cart snapshot).')) ?>
+        </p>
+        <?php endif; ?>
+    </div>
+</section>
+
+<?php if ($entity->getStatus() === \Osiyatech\ShoppingCart\Api\Data\ShoppingCartRequestInterface::STATUS_PENDING): ?>
+<div id="reject-cart-modal" style="display:none;">
+    <form id="reject-cart-form" action="<?= $block->escapeUrl($block->getRejectUrl()) ?>" method="post">
+        <?= $block->getBlockHtml('formkey') ?>
+        <div class="admin__field">
+            <label class="admin__field-label" for="rejection_reason">
+                <span><?= $block->escapeHtml(__('Reason for Rejection')) ?></span>
+            </label>
+            <div class="admin__field-control">
+                <textarea id="rejection_reason" name="rejection_reason" class="admin__control-textarea" rows="5" placeholder="<?= $block->escapeHtmlAttr(__('Please provide a reason...')) ?>"></textarea>
+            </div>
+        </div>
+        <div class="admin__field" style="margin-top: 15px;">
+            <div class="admin__field-control">
+                <button type="submit" class="action-primary"><span><?= $block->escapeHtml(__('Submit')) ?></span></button>
+                <button type="button" class="action-secondary" id="cancel-reject-btn" style="margin-left: 10px;"><span><?= $block->escapeHtml(__('Cancel')) ?></span></button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+require(['jquery', 'Magento_Ui/js/modal/modal'], function($, modal) {
+    var rejectBtn = $('#reject-cart-request-btn');
+    var rejectModal = $('#reject-cart-modal');
+    var cancelBtn = $('#cancel-reject-btn');
+    var options = { type: 'popup', responsive: true, innerScroll: true, title: '<?= $block->escapeJs(__('Reject Cart PO Request')) ?>', buttons: [] };
+    var popup = modal(options, rejectModal);
+    rejectBtn.on('click', function() { rejectModal.modal('openModal'); });
+    cancelBtn.on('click', function() { rejectModal.modal('closeModal'); });
+});
+</script>
+<?php endif; ?>
